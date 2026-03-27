@@ -1,38 +1,39 @@
+
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Cart() {
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+
+
+  const fetchCart = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return;
+    }
+
+    try {
+      const res = await fetch("https://stockweb-eibm.onrender.com/api/users/cart", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setCartItems(data);
+      }
+    } catch (error) {
+      console.error("Error fetching cart:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchCart = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/login");
-        return;
-      }
-
-      try {
-        const res = await fetch("https://stockweb-eibm.onrender.com/api/users/cart", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await res.json();
-        if (res.ok) {
-          setCartItems(data);
-        }
-      } catch (error) {
-        console.error("Error fetching cart:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCart();
-  }, [navigate]);
+  }, []);
 
   const updateQuantity = async (stockId, newQuantity) => {
     if (newQuantity < 1) return;
@@ -124,12 +125,12 @@ export default function Cart() {
         {cartItems.length === 0 ? (
           <div className="bg-white p-10 rounded-2xl shadow text-center">
             <p className="text-gray-500 text-lg mb-6">Your cart is currently empty.</p>
-            <button
-              onClick={() => navigate("/stocks")}
-              className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition"
+            <Link
+              to="/stocks"
+              className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition inline-block"
             >
               Start Exploring Stocks
-            </button>
+            </Link>
           </div>
         ) : (
           <div className="grid lg:grid-cols-3 gap-8">
