@@ -108,7 +108,7 @@ export default function ManageStocks() {
                           Edit
                         </button>
                       </Link>
-                      <button 
+                      <button
                         onClick={() => handleDelete(stock._id, stock.symbol)}
                         className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition text-sm font-medium"
                       >
