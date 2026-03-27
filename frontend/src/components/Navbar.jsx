@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState(null);
   const [cartCount, setCartCount] = useState(0);
-  const navigate = useNavigate();
+
   const location = useLocation();
 
   const fetchCartCount = async () => {
@@ -45,7 +45,6 @@ export default function Navbar() {
     setIsLoggedIn(false);
     setRole(null);
     setCartCount(0);
-    navigate("/");
   };
 
   return (
@@ -75,7 +74,7 @@ export default function Navbar() {
         <Link to="/" className="text-2xl font-bold tracking-wide">
           STOCKER
         </Link>
-                            
+
         <ul className="flex items-center gap-8 text-lg">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/stock_visualization">Stock Visualization</Link></li>
