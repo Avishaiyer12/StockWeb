@@ -1,0 +1,11 @@
+console.log('Test script started');
+const path = require('path');
+console.log('Path required');
+const dotenv = require('dotenv');
+console.log('Dotenv required');
+dotenv.config({ path: path.join(__dirname, '.env') });
+console.log('Dotenv configured');
+const mongoose = require('mongoose');
+console.log('Mongoose required');
+console.log('MONGO_URI:', process.env.MONGO_URI ? 'Exists' : 'Missing');
+process.exit(0);
