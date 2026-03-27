@@ -62,7 +62,7 @@ export default function Profile() {
                 <p className="text-lg font-medium">{user?.email}</p>
               </div>
             </div>
-            
+
             <Link to="/profile/edit">
               <button className="w-full bg-gray-100 text-gray-800 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">
                 ✏️ Edit Profile
@@ -80,7 +80,7 @@ export default function Profile() {
                   <p className="text-sm text-green-700">View tracked stocks ({user?.watchlist?.length || 0})</p>
                 </div>
               </Link>
-              
+
               <Link to="/stocks" className="flex items-center p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition border border-blue-100">
                 <span className="text-3xl mr-4">🚀</span>
                 <div>
