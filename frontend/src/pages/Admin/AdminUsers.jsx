@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
-          navigate("/login");
           return;
         }
 
@@ -23,9 +21,7 @@ export default function AdminUsers() {
         });
 
         if (!res.ok) {
-          if (res.status === 401) {
-            navigate("/login");
-          }
+
           throw new Error("Failed to fetch users");
         }
 
@@ -39,7 +35,7 @@ export default function AdminUsers() {
     };
 
     fetchUsers();
-  }, [navigate]);
+  }, []);
 
   if (loading) return <div className="text-center py-10">Loading users...</div>;
   if (error) return <div className="text-center py-10 text-red-600">{error}</div>;
