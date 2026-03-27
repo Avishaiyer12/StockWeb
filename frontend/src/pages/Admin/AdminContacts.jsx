@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function AdminContacts() {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchContacts = async () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
-          navigate("/login");
           return;
         }
 
@@ -23,9 +21,7 @@ export default function AdminContacts() {
         });
 
         if (!res.ok) {
-          if (res.status === 401) {
-            navigate("/login");
-          }
+
           throw new Error("Failed to fetch contact forms");
         }
 
@@ -39,7 +35,7 @@ export default function AdminContacts() {
     };
 
     fetchContacts();
-  }, [navigate]);
+  }, []);
 
   if (loading) return <div className="text-center py-10">Loading contacts...</div>;
   if (error) return <div className="text-center py-10 text-red-600">{error}</div>;
