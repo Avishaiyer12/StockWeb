@@ -1,107 +1,126 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
-export default function Profile() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+import { useEffect, useState } from "react";
 
+const initialStocks = [];
+
+const Watchlist = () => {
+  const [stocks, setStocks] = useState(initialStocks);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        return;
-      }
-
-      try {
-        const res = await fetch("https://stockweb-eibm.onrender.com/api/users/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch profile");
-        }
-
-        const data = await res.json();
-        setUser(data);
-      } catch (error) {
-        console.error(error);
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
-        localStorage.removeItem("role");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProfile();
+    const existing = JSON.parse(localStorage.getItem("watchlist")) || [];
+    setStocks(existing);
   }, []);
 
-  if (loading) return <div className="text-center py-20">Loading Dashboard...</div>;
+  const handleRemove = (stockName) => {
+    const updatedStocks = stocks.filter(
+      (stock) => stock !== stockName
+    );
+
+    setStocks(updatedStocks);
+    localStorage.setItem("watchlist", JSON.stringify(updatedStocks));
+  };
+
+  const handleAddToCart = async (symbol) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please login to add stocks to your cart.");
+      return;
+    }
+
+    try {
+      console.log(`Sending add to cart request for symbol: ${symbol}`);
+      const res = await fetch("https://stockweb-eibm.onrender.com/api/users/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ symbol }),
+      });
+
+      // console.log(`Response status: ${res.status}`);
+
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        console.log("Expected JSON but got:", text.substring(0, 100));
+        throw new Error(`Server returned non-JSON response (Status ${res.status})`);
+      }
+
+      const data = await res.json();
+      if (res.ok) {
+        alert(`${symbol} added to cart!`);
+        window.dispatchEvent(new Event("cartUpdated"));
+      } else {
+        console.log("Error details:", data);
+        alert(`Failed (Status ${res.status}): ${data.message || JSON.stringify(data)}`);
+      }
+    } catch (error) {
+      console.error("Fetch error details:", error);
+      alert(`Network error: ${error.message}`);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-28 pb-10 px-6">
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div className="bg-blue-600 p-8 text-white">
-          <h1 className="text-3xl font-bold">Welcome back, {user?.name}!</h1>
-          <p className="mt-2 opacity-90">Manage your investments and watchlist in one place.</p>
-        </div>
+    <>
+      <section className="bg-white py-16 px-4">
+        <div className="max-w-5xl mx-auto text-center">
+          <h4 className="text-[#00D084] font-semibold text-lg mb-2">
+            Watchlist
+          </h4>
 
-        <div className="p-8 grid md:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            <h2 className="text-xl font-bold text-gray-800 border-b pb-2">Your Information</h2>
-            <div className="space-y-4">
-              <div>
-                <span className="block text-sm text-gray-500 uppercase font-bold tracking-wider">Name</span>
-                <p className="text-lg font-medium">{user?.name}</p>
-              </div>
-              <div>
-                <span className="block text-sm text-gray-500 uppercase font-bold tracking-wider">Email</span>
-                <p className="text-lg font-medium">{user?.email}</p>
-              </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            Your Stock Watchlist
+          </h2>
+
+          <p className="text-gray-500 max-w-2xl mx-auto mb-12 text-md leading-relaxed">
+            Track your favorite stocks in real-time. Get updates on price changes,
+            market trends, and performance insights all in one place.
+          </p>
+
+          <div className="border border-blue-100 rounded-2xl p-4 md:p-10 bg-white">
+            <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+
+              {stocks.length === 0 ? (
+                <div className="p-10 text-gray-400">
+                  Your watchlist is empty.
+                </div>
+              ) : (
+                stocks.map((stock, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-5 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="text-left">
+                      <span className="text-[#00D084] font-medium text-lg uppercase">
+                        {stock}
+                      </span>
+                    </div>
+
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => handleAddToCart(stock)}
+                        className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg text-sm transition-all shadow-sm flex items-center gap-2"
+                      >
+                        Add to Cart
+                      </button>
+                      <button
+                        onClick={() => handleRemove(stock)}
+                        className="bg-[#E53E3E] hover:bg-[#C53030] text-white font-semibold py-2 px-6 rounded-lg text-sm transition-all shadow-sm"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+
             </div>
-
-            <Link to="/profile/edit">
-              <button className="w-full bg-gray-100 text-gray-800 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">
-                ✏️ Edit Profile
-              </button>
-            </Link>
-          </div>
-
-          <div className="space-y-6">
-            <h2 className="text-xl font-bold text-gray-800 border-b pb-2">Quick Access</h2>
-            <div className="grid grid-cols-1 gap-4">
-              <Link to="/watchlist" className="flex items-center p-4 bg-green-50 rounded-xl hover:bg-green-100 transition border border-green-100">
-                <span className="text-3xl mr-4">📊</span>
-                <div>
-                  <h3 className="font-bold text-green-800">My Watchlist</h3>
-                  <p className="text-sm text-green-700">View tracked stocks ({user?.watchlist?.length || 0})</p>
-                </div>
-              </Link>
-
-              <Link to="/stocks" className="flex items-center p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition border border-blue-100">
-                <span className="text-3xl mr-4">🚀</span>
-                <div>
-                  <h3 className="font-bold text-blue-800">Explore Stocks</h3>
-                  <p className="text-sm text-blue-700">Find new market opportunities</p>
-                </div>
-              </Link>
-
-              <Link to="/predict/AAPL" className="flex items-center p-4 bg-purple-50 rounded-xl hover:bg-purple-100 transition border border-purple-100">
-                <span className="text-3xl mr-4">🤖</span>
-                <div>
-                  <h3 className="font-bold text-purple-800">AI Predictions</h3>
-                  <p className="text-sm text-purple-700">Get insights on AAPL and more</p>
-                </div>
-              </Link>
-            </div>
           </div>
         </div>
-
-
-      </div>
-    </div>
+      </section>
+    </>
   );
-}
+};
+
+export default Watchlist;
