@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function EditProfile() {
   const [formData, setFormData] = useState({
@@ -11,13 +11,12 @@ export default function EditProfile() {
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
-        navigate("/login");
         return;
       }
 
@@ -46,7 +45,7 @@ export default function EditProfile() {
     };
 
     fetchProfile();
-  }, [navigate]);
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -81,9 +80,6 @@ export default function EditProfile() {
       }
 
       setSuccess("Profile updated successfully!");
-      setTimeout(() => {
-        navigate("/profile");
-      }, 1500);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -139,13 +135,12 @@ export default function EditProfile() {
           {success && <p className="text-green-600 text-sm">{success}</p>}
 
           <div className="flex gap-4">
-            <button
-              type="button"
-              onClick={() => navigate("/profile")}
-              className="flex-1 bg-gray-100 text-gray-800 py-3 rounded-xl font-bold hover:bg-gray-200 transition"
+            <Link
+              to="/profile"
+              className="flex-1 bg-gray-100 text-gray-800 py-3 rounded-xl font-bold hover:bg-gray-200 transition text-center"
             >
               Cancel
-            </button>
+            </Link>
             <button
               type="submit"
               disabled={updating}
