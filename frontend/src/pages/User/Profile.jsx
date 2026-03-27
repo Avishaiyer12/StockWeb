@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
-        navigate("/login");
         return;
       }
 
@@ -31,14 +30,14 @@ export default function Profile() {
         console.error(error);
         localStorage.removeItem("token");
         localStorage.removeItem("role");
-        navigate("/login");
+        localStorage.removeItem("role");
       } finally {
         setLoading(false);
       }
     };
 
     fetchProfile();
-  }, [navigate]);
+  }, []);
 
   if (loading) return <div className="text-center py-20">Loading Dashboard...</div>;
 
