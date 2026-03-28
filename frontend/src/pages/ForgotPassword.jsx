@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
-
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -14,9 +12,7 @@ const ForgotPassword = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
-        <h2 className="text-xl font-bold text-center mb-4">
-          Password Reset
-        </h2>
+        <h2 className="text-xl font-bold text-center mb-4">Password Reset</h2>
 
         <p className="text-sm text-gray-600 mb-4">
           Enter your email address and we’ll send you a reset link.

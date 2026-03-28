@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
+const existingData = {
+  AAPL: { name: "Apple Inc", sector: "Technology" },
+  MSFT: { name: "Microsoft Corp", sector: "Technology" },
+  GOOGL: { name: "Alphabet Inc", sector: "Tech" },
+};
+
 export default function EditStock() {
   const { symbol } = useParams();
-
-  const existingData = {
-    AAPL: { name: "Apple Inc", sector: "Technology" },
-    MSFT: { name: "Microsoft Corp", sector: "Technology" },
-    GOOGL: { name: "Alphabet Inc", sector: "Tech" },
-  };
 
   const [form, setForm] = useState({
     symbol: symbol.toUpperCase(),
