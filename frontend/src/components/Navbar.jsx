@@ -13,7 +13,7 @@ export default function Navbar() {
     if (!token) return;
 
     try {
-      const res = await fetch("http://localhost:5000/api/users/cart", {
+      const res = await fetch("https://stockweb-eibm.onrender.com/api/users/cart", {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {

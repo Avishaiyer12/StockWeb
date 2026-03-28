@@ -62,7 +62,7 @@ const News = () => {
             key={index}
             className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-xl transition"
           >
-            <img src={news.image} className="w-full h-44 object-cover" />
+            <img src={news.image} alt={news.title} className="w-full h-44 object-cover" />
 
             <div className="p-4">
               <h2 className="font-semibold text-lg">{news.title}</h2>

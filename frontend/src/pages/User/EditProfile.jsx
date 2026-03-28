@@ -22,7 +22,7 @@ export default function EditProfile() {
       }
 
       try {
-        const res = await fetch("http://localhost:5000/api/users/profile", {
+        const res = await fetch("https://stockweb-eibm.onrender.com/api/users/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -65,7 +65,7 @@ export default function EditProfile() {
         updateData.password = formData.password;
       }
 
-      const res = await fetch("http://localhost:5000/api/users/profile", {
+      const res = await fetch("https://stockweb-eibm.onrender.com/api/users/profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

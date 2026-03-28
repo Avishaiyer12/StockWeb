@@ -8,7 +8,7 @@ export default function ManageStocks() {
 
   const fetchStocks = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/stocks");
+      const res = await fetch("https://stockweb-eibm.onrender.com/api/stocks");
       const data = await res.json();
       if (res.ok) {
         setStocks(data);
@@ -29,7 +29,7 @@ export default function ManageStocks() {
 
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(`http://localhost:5000/api/stocks/${id}`, {
+      const res = await fetch(`https://stockweb-eibm.onrender.com/api/stocks/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

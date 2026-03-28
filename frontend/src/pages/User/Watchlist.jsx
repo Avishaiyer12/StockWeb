@@ -28,7 +28,7 @@ const Watchlist = () => {
 
     try {
       console.log(`Sending add to cart request for symbol: ${symbol}`);
-      const res = await fetch("http://localhost:5000/api/users/cart", {
+      const res = await fetch("https://stockweb-eibm.onrender.com/api/users/cart", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

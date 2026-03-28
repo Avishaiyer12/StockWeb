@@ -5,7 +5,7 @@ import { allServices } from "../data/serviceData";
 
 export default function LearnMore() {
   const { id } = useParams();
-  const singleData = allServices.find((item) => item.id == id);
+  const singleData = allServices.find((item) => String(item.id) === String(id));
   return (
     <div className="w-full min-h-screen bg-white px-10 py-16">
       {

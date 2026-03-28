@@ -16,7 +16,7 @@ export default function AdminContacts() {
           return;
         }
 
-        const res = await fetch("http://localhost:5000/api/contact", {
+        const res = await fetch("https://stockweb-eibm.onrender.com/api/contact", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

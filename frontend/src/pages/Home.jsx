@@ -1,5 +1,5 @@
  import React from "react";
-  import { Link } from "react-router-dom";
+ 
 
  function Home() {
   return (
@@ -79,12 +79,12 @@
             </div>
 
             <div className="flex gap-4 mt-10">
-              <a
-                href="#"
+              <button
+                type="button"
                 className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700"
               >
                 Discover Now
-              </a>
+              </button>
 
               <a
                 href="tel:+919420069741"
@@ -99,9 +99,9 @@
           <div className="flex items-center justify-center">
             <div className="w-[390px] h-[295px] rounded-2xl shadow-inner flex items-center justify-center pt-23 pl-20 justify-content-center">
               <span className="text-blue-600 text-6xl font-bold">
-                <img src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSSawG_cmdvk5Nj53-uXHLt9VKDwFI-Ib1J9JCbbpZ2a5OEke_o" />
+                <img src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSSawG_cmdvk5Nj53-uXHLt9VKDwFI-Ib1J9JCbbpZ2a5OEke_o" alt="" />
                 &nbsp;
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7WcJos_a3jDp6B2UhOrRvLVbXwRPPv71U-_0sA8jwzK35ICYS" />
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7WcJos_a3jDp6B2UhOrRvLVbXwRPPv71U-_0sA8jwzK35ICYS" alt="" />
               </span>
             </div>
           </div>

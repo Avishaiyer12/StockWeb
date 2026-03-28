@@ -6,31 +6,31 @@ export default function Cart() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const fetchCart = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-
-    try {
-      const res = await fetch("http://localhost:5000/api/users/cart", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setCartItems(data);
-      }
-    } catch (error) {
-      console.error("Error fetching cart:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchCart = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+
+      try {
+        const res = await fetch("https://stockweb-eibm.onrender.com/api/users/cart", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setCartItems(data);
+        }
+      } catch (error) {
+        console.error("Error fetching cart:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchCart();
   }, [navigate]);
 
@@ -38,7 +38,7 @@ export default function Cart() {
     if (newQuantity < 1) return;
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch("http://localhost:5000/api/users/cart", {
+      const res = await fetch("https://stockweb-eibm.onrender.com/api/users/cart", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export default function Cart() {
   const removeItem = async (stockId) => {
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(`http://localhost:5000/api/users/cart/${stockId}`, {
+      const res = await fetch(`https://stockweb-eibm.onrender.com/api/users/cart/${stockId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -85,7 +85,7 @@ export default function Cart() {
     if (!cartItems.length) return;
 
     try {
-      const res = await fetch("http://localhost:5000/api/users/checkout", {
+      const res = await fetch("https://stockweb-eibm.onrender.com/api/users/checkout", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

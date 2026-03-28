@@ -15,7 +15,7 @@ export default function Profile() {
       }
 
       try {
-        const res = await fetch("http://localhost:5000/api/users/profile", {
+        const res = await fetch("https://stockweb-eibm.onrender.com/api/users/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
